@@ -14,5 +14,5 @@ export const AppDataSource = new DataSource({
     ],
     subscribers: [
         "src/subscribers/**/*.ts"
-    ],
+    ]
 })
