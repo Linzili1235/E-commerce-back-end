@@ -2,7 +2,7 @@
    "name": "lulu-server",
    "version": "0.0.1",
    "description": "Awesome project developed with TypeORM.",
-   "type": "module",
+   "type": "commonjs",
 
    "devDependencies": {
       "@types/bcryptjs": "^2.4.2",
@@ -31,16 +31,16 @@
    },
    "scripts": {
       "start": "set debug=* && ts-node-dev --respawn --transpile-only ./src/index.ts",
-      "typeorm": "typeorm-ts-node-commonjs",
+      "typeorm": "typeorm-ts-node-commonjs -d ./src/data-source.ts",
 
       "[__for TypeORNM migration": "",
-      "migration:create": "ts-node ./node_modules/typeorm/cli.js migration:create",
-      "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run",
-      "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert",
+      "migration:create": "ts-node ./node_modules/typeorm/cli.js migration:create -d ./src/data-source.ts",
+      "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/data-source.ts ",
+      "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert -d ./src/data-source.ts",
 
-      "schema:drop": "ts-node ./node_modules/typeorm/cli.js schema:drop",
-      "schema:Sync": "ts-node ./node_modules/typeorm/cli.js schema:sync",
-      "migration:Show": "ts-node ./node_modules/typeorm/cli.js migration:Show",
+      "schema:drop": "ts-node ./node_modules/typeorm/cli.js -d ./src/data-source.ts schema:drop",
+      "schema:sync": "ts-node ./node_modules/typeorm/cli.js -d ./src/data-source.ts schema:sync",
+      "migration:show": "ts-node ./node_modules/typeorm/cli.js -d ./src/data-source.ts migration:show",
 
       "]__for TypeORM migration": ""
    }

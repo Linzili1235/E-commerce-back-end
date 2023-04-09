@@ -31,12 +31,6 @@ export class Order {
     taxRate: number
 
     @Column({nullable: true, default: false})
-    isStaff: boolean
-
-    @Column({nullable: true, default: false})
-    isActive: boolean
-
-    @Column({nullable: true, default: false})
     isDelete: boolean
 
     // 一个订单只能归于一个用户

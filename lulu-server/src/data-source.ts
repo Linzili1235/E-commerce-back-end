@@ -4,7 +4,7 @@ import { DataSource } from "typeorm"
 export const AppDataSource = new DataSource({
     type: "sqlite",
     database: "database.sqlite",
-    synchronize: true,
+    synchronize: false,
     logging: false,
     entities: [
         "src/entity/**/*.ts"
