@@ -1,10 +1,10 @@
+
 import "reflect-metadata"
 import * as express from "express"
 import * as bodyParser from "body-parser"
-import { Request, Response } from "express"
 import { AppDataSource } from "./data-source"
-import { Routes } from "./routes"
-import { User } from "./entity/User"
+import routes from "./routes"
+
 const SERVER_PORT = 3000
 
 AppDataSource.initialize().then(async () => {
@@ -13,10 +13,7 @@ AppDataSource.initialize().then(async () => {
     // middleware: parsing HTTP request bodies,
     // request body can contain various types of data, such as JSON, XML, or form data.
     app.use(bodyParser.json())
-    app.use('/', (req, res) => {
-        console.log('received request:', req)
-        res.send('hi, this is backend')
-    })
+    app.use('/', routes)
     // start express server
     app.listen(SERVER_PORT)
 

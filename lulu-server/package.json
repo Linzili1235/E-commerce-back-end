@@ -2,7 +2,8 @@
    "name": "lulu-server",
    "version": "0.0.1",
    "description": "Awesome project developed with TypeORM.",
-   "type": "commonjs",
+   "type": "module",
+
    "devDependencies": {
       "@types/bcryptjs": "^2.4.2",
       "@types/body-parser": "^1.19.2",
@@ -10,6 +11,7 @@
       "@types/helmet": "^4.0.0",
       "@types/jsonwebtoken": "^9.0.1",
       "@types/node": "^16.11.10",
+      "@types/express": "^4.17.17",
       "node-dev": "^8.0.0",
       "ts-node": "10.7.0",
       "ts-node-dev": "^2.0.0",
@@ -29,6 +31,17 @@
    },
    "scripts": {
       "start": "set debug=* && ts-node-dev --respawn --transpile-only ./src/index.ts",
-      "typeorm": "typeorm-ts-node-commonjs"
+      "typeorm": "typeorm-ts-node-commonjs",
+
+      "[__for TypeORNM migration": "",
+      "migration:create": "ts-node ./node_modules/typeorm/cli.js migration:create",
+      "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run",
+      "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert",
+
+      "schema:drop": "ts-node ./node_modules/typeorm/cli.js schema:drop",
+      "schema:Sync": "ts-node ./node_modules/typeorm/cli.js schema:sync",
+      "migration:Show": "ts-node ./node_modules/typeorm/cli.js migration:Show",
+
+      "]__for TypeORM migration": ""
    }
 }
