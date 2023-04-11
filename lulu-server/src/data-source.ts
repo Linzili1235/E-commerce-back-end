@@ -1,7 +1,8 @@
 import "reflect-metadata"
-import { DataSource } from "typeorm"
+import { DataSource, DataSourceOptions } from "typeorm"
+import { SeederOptions } from 'typeorm-extension';
 
-export const AppDataSource = new DataSource({
+const options: DataSourceOptions & SeederOptions = {
     type: "sqlite",
     database: "database.sqlite",
     synchronize: false,
@@ -14,5 +15,8 @@ export const AppDataSource = new DataSource({
     ],
     subscribers: [
         "src/subscribers/**/*.ts"
-    ]
-})
+    ],
+    seeds: ['src/db/seeds/**/*{.ts,.js}'],
+    factories: ['src/db/factories/**/*{.ts,.js}']
+}
+export const AppDataSource = new DataSource(options);

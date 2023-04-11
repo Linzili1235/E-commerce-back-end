@@ -19,7 +19,7 @@ export class User {
     lastName: string
 
     @Column({nullable: true})
-    @Min(15)
+    @Min(5)
     @Max(120)
     age: number
 

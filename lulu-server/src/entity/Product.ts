@@ -36,9 +36,10 @@ export class Product {
     @Column()
     media: string
 
+    @Column({nullable: true, default: false})
+    isActive: boolean
     // Many-to-many relationship
     @ManyToMany(() => Order)
-    @JoinTable()
     orders: Order[]
 
     @Column()
