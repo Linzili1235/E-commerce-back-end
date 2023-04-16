@@ -10,7 +10,6 @@ export default class ProductSeeder implements Seeder {
         const productFactory = await factoryManager.get(Product);
         // save 1 factory generated entity, to the database
         // await productFactory.save();
-        console.log('seed', productFactory)
         // save 5 factory generated entities, to the database
         await productFactory.saveMany(5);
     }

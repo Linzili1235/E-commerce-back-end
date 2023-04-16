@@ -3,6 +3,7 @@ import { Seeder, SeederFactoryManager } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 import { User } from '../../entity/User';
 
+// seed command:
 export default class UserSeeder implements Seeder {
     public async run(
         dataSource: DataSource,
@@ -13,7 +14,6 @@ export default class UserSeeder implements Seeder {
         let user1 = new User()
         user1.firstName = 'Peidong'
         user1.lastName = 'He'
-        user1.age = 50
         user1.email = 'peidong@gmail.com'
         user1.password = 'lululemon'
         user1.isStaff = true
@@ -22,7 +22,6 @@ export default class UserSeeder implements Seeder {
         let user2 = new User()
         user2.firstName = 'Jing'
         user2.lastName = 'Yi'
-        user2.age = 20
         user2.email = 'jingyi@gmail.com'
         user2.password = 'lululemon'
         user2.isStaff = true
@@ -31,7 +30,6 @@ export default class UserSeeder implements Seeder {
         let user3 = new User()
         user3.firstName = 'Bill'
         user3.lastName = 'Xu'
-        user3.age = 29
         user3.email = 'bill@gmail.com'
         user3.password = 'lululemon'
         await repo.save(user3)

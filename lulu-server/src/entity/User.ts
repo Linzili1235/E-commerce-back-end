@@ -18,11 +18,6 @@ export class User {
     @Length(1, 100)
     lastName: string
 
-    @Column({nullable: true})
-    @Min(5)
-    @Max(120)
-    age: number
-
     @Column()
     @IsEmail()
     @Length(5,150)

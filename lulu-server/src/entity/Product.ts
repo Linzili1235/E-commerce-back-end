@@ -4,11 +4,10 @@ import {
     Column,
     Unique,
     CreateDateColumn,
-    UpdateDateColumn, ManyToMany, JoinTable,
+    UpdateDateColumn, ManyToMany,
 } from "typeorm"
 import { Length, Min} from "class-validator";
 import {Order} from "./Order";
-
 
 // annotation 注释写法
 @Entity()

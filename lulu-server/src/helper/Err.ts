@@ -7,11 +7,12 @@ export enum HttpCode {
 
 export enum ErrStr {
     OK ='success',
-
+    LoggedIn = 'Logged in',
     // DATABASE
     ErrNoObj = 'Can not find the specific record',
     ErrStore = 'Failed to store dats',
     ErrInvalid = 'Invalid user id or product ids',
+    ErrEmailOrPassword = 'Invalid email or password',
     // PARAMETER
     ErrMissingParameter = 'Missing Params'
 }
