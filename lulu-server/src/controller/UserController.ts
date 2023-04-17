@@ -6,6 +6,7 @@ import {Err, ErrStr, HttpCode} from "../helper/Err";
 import * as path from "path";
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+// require('dotenv').config();  from root
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
 
 export class UserController {
@@ -13,6 +14,7 @@ export class UserController {
     public static get repo() {
         return AppDataSource.getRepository(User)
     }
+
     static async all(request: Request, response: Response, next: NextFunction) {
         let users = []
         try {
@@ -24,17 +26,17 @@ export class UserController {
         return response.status(HttpCode.E200).send(new Err(HttpCode.E200, ErrStr.OK, users))
     }
     static async one(request: Request, response: Response, next: NextFunction) {
-        const {userId} = request.params
+        const {email} = request.body
         // check if user id is present in the params
-        if (!userId) return response.status(HttpCode.E400).send(new Err(HttpCode.E400, ErrStr.ErrMissingParameter))
+        if (!email) return response.status(HttpCode.E400).send(new Err(HttpCode.E400, ErrStr.ErrMissingParameter))
 
         let user = null
         try {
             user = await UserController.repo.findOneOrFail({
-                where: {id: Number(userId)}
+                where: {"email": email}
             })
         }catch (e) {
-            console.error('error write to database',e)
+            console.error('error fetch user info',e)
             return response.status(HttpCode.E400).send(new Err(HttpCode.E400, ErrStr.ErrStore, e))
         }
         return response.status(HttpCode.E200).send(new Err(HttpCode.E200, ErrStr.OK, user))
@@ -63,6 +65,7 @@ export class UserController {
             }
             // save data to db
             await UserController.repo.save(user)
+            response.status(HttpCode.E200).json(`Success! New user: ${user.firstName} is created!`)
         }catch(e){
             return response.status(HttpCode.E400).send(new Err(HttpCode.E400, ErrStr.ErrStore, e))
         }
@@ -117,8 +120,9 @@ export class UserController {
     }
     static async logIn(request: Request, response: Response, next: NextFunction) {
         const userEmail = request.body.email
+        const pwd = request.body.password
         // check if user id is present in the params
-        if (!userEmail) return response.status(HttpCode.E400).send(new Err(HttpCode.E400, ErrStr.ErrMissingParameter))
+        if (!userEmail || !pwd) return response.status(HttpCode.E400).send(new Err(HttpCode.E400, ErrStr.ErrMissingParameter))
 
         // Authentication
         try {
@@ -126,7 +130,8 @@ export class UserController {
             const user = await UserController.repo.findOneOrFail({
                 where: {email: userEmail}
             })
-            const match = await bcrypt.compare(request.body.password, user.password)
+            const match = await bcrypt.compare(pwd, user.password)
+            console.log(match)
             if (match) {
                 // Authorization
                 // JWT token
@@ -141,7 +146,22 @@ export class UserController {
                     {"email": user.email, auth_type: 'login'},
                     "" + process.env.ACCESS_TOKEN_SECRET,
                     { expiresIn: process.env.ACCESS_TOKEN_EXPIRATION_TIME})
-                return response.status(HttpCode.E200).send(new Err(HttpCode.E200, ErrStr.LoggedIn))
+                const refreshToken = jwt.sign(
+                    {"email": user.email, auth_type: 'refresh'},
+                    "" + process.env.REFRESH_TOKEN_SECRET,
+                    { expiresIn: process.env.REFRESH_TOKEN_EXPIRATION_TIME})
+
+                const otherUsers = (await UserController.repo.find()).filter(person => person.email !== user.email)
+                // save refreshToken in the database so it can be cross-referenced
+                const currentUser = {...user, refreshToken}
+                await UserController.repo.save([...otherUsers, currentUser])
+                // save refresh token in cookie with httponly and expires in one day
+                response.cookie('jwt', refreshToken, {httpOnly:true, maxAge:24*60*60*1000})
+                return response.status(HttpCode.E200).json({
+                    accessToken,
+                    refreshToken,
+                    error: new Err(HttpCode.E200, ErrStr.LoggedIn)
+                });
             }
         }catch (e) {
             console.log(e)
@@ -149,4 +169,5 @@ export class UserController {
         }
         return response.status(HttpCode.E400).send(new Err(HttpCode.E404, ErrStr.ErrEmailOrPassword))
     }
+
 }

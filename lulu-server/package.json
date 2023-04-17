@@ -21,6 +21,7 @@
       "body-parser": "^1.19.1",
       "browserify-zlib": "^0.2.0",
       "class-validator": "^0.14.0",
+      "cookie-parser": "^1.4.6",
       "cors": "^2.8.5",
       "dotenv": "^16.0.3",
       "express": "^4.17.2",

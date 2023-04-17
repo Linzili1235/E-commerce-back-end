@@ -2,6 +2,7 @@
 import { Seeder, SeederFactoryManager } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 import { User } from '../../entity/User';
+const bcrypt = require('bcrypt');
 
 // seed command:
 export default class UserSeeder implements Seeder {
@@ -10,12 +11,14 @@ export default class UserSeeder implements Seeder {
         factoryManager: SeederFactoryManager
     ): Promise<any> {
         const repo =  dataSource.getRepository(User);
+        // all users share the same hashedPassword
+        const hashedPassword = await bcrypt.hash('lululemon', 10)
         // admin
         let user1 = new User()
         user1.firstName = 'Peidong'
         user1.lastName = 'He'
         user1.email = 'peidong@gmail.com'
-        user1.password = 'lululemon'
+        user1.password = hashedPassword
         user1.isStaff = true
         await repo.save(user1)
         // admin 2
@@ -23,7 +26,7 @@ export default class UserSeeder implements Seeder {
         user2.firstName = 'Jing'
         user2.lastName = 'Yi'
         user2.email = 'jingyi@gmail.com'
-        user2.password = 'lululemon'
+        user2.password = hashedPassword
         user2.isStaff = true
         await repo.save(user2)
         // customer
@@ -31,7 +34,7 @@ export default class UserSeeder implements Seeder {
         user3.firstName = 'Bill'
         user3.lastName = 'Xu'
         user3.email = 'bill@gmail.com'
-        user3.password = 'lululemon'
+        user3.password = hashedPassword
         await repo.save(user3)
     }
 }
