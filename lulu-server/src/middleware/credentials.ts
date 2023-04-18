@@ -6,8 +6,6 @@ import allowedOrigins from "../config/allowedOrigins";
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
         res.header('Access-Control-Allow-Credentials', 'true');
-    } else {
-        res.removeHeader('Access-Control-Allow-Credentials');
     }
     next();
 }

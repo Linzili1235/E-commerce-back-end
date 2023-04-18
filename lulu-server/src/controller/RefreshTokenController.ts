@@ -4,8 +4,8 @@ import {UserController} from "./UserController";
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-//COOKIE= WJQ
 const handleRefresh = async (req: Request, res: Response) => {
+    console.log(req)
     const cookies = req.cookies
     // check if there is a jwt in the cookie
     if (!cookies?.jwt) return res.status(HttpCode.E404).send(new Err(HttpCode.E404, ErrStr.ErrUnauthorized))

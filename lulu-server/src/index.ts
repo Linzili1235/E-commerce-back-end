@@ -8,6 +8,7 @@ import user from "./routes/user";
 import refresh from "./routes/refresh";
 import order from "./routes/order";
 import logout from "./routes/logout";
+import corsOptions from "./config/corsOptions";
 import credentials from "./middleware/credentials";
 import * as cors from 'cors';
 const SERVER_PORT = 3000;
