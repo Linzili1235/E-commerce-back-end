@@ -1,5 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, Unique, CreateDateColumn, UpdateDateColumn, OneToMany} from "typeorm"
-import {IsEmail, Length, Max, Min} from "class-validator";
+import {IsEmail, Length} from "class-validator";
 import {Order} from "./Order";
 
 // annotation 注释写法
@@ -26,6 +26,9 @@ export class User {
     @Column()
     @Length(6,100)
     password: string
+
+    @Column({nullable: true})
+    refreshToken: string
 
     @Column({nullable: true, default: false})
     isStaff: boolean

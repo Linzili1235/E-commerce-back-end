@@ -12,17 +12,17 @@ interface GetUserInfo extends Request {
 const verifyJWT = (req: GetUserInfo, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization'];
     if (!authHeader) return res.status(HttpCode.E404).send(new Err(HttpCode.E404, ErrStr.ErrToken))
-    console.log(authHeader) // Bearer token
     const token = authHeader.split(' ')[1]
     // check if token is expired
     jwt.verify(
         token,
         process.env.ACCESS_TOKEN_SECRET,
-        (err, jwtPayload) => {
-            if (err) res.status(HttpCode.E404).send(new Err(HttpCode.E404, ErrStr.ErrToken))
-            req.email = jwtPayload.email
-            req.auth_type = jwtPayload.auth_type
-            console.log(jwtPayload)
+        (err, decoded) => {
+            // decoded is the information from the token's payload section
+            // token = payload + secret + options
+            if (err || !decoded.email) return res.status(HttpCode.E404).send(new Err(HttpCode.E404, ErrStr.ErrToken))
+            req.email = decoded.email
+            req.auth_type = decoded.auth_type
             next()
         }
     )

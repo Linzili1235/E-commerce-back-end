@@ -3,6 +3,6 @@ import order from './order';
 
 const routes = Router();
 
-routes.use('/order', order)
+// empty for now
 
 export default routes;
