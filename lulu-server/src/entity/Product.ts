@@ -3,11 +3,10 @@ import {
     PrimaryGeneratedColumn,
     Column,
     Unique,
-    CreateDateColumn,
-    UpdateDateColumn, ManyToMany,
+    OneToMany
 } from "typeorm"
 import { Length, Min} from "class-validator";
-import {Order} from "./Order";
+import {OrderProduct} from "./OrderProduct";
 
 // annotation 注释写法
 @Entity()
@@ -15,7 +14,10 @@ import {Order} from "./Order";
 export class Product {
 
     @PrimaryGeneratedColumn()
-    id: number
+    product_id: number
+
+    @Column()
+    product_real_id: string
 
     @Column()
     @Length(1, 200)
@@ -25,29 +27,30 @@ export class Product {
     @Length(1, 200)
     name: string
 
-    @Column('decimal',{precision: 5, scale: 2})
-    @Min(0)
-    price: number
+    // @Column('decimal',{precision: 5, scale: 2})
+    // @Min(0)
+    // price: number
 
     @Column()
-    description: string
+    price: string
 
     @Column()
     media: string
 
+    @Column({nullable: false})
+    color: string
+
+    @Column({nullable: false})
+    size: string
+
     @Column({nullable: true, default: false})
     isActive: boolean
     // Many-to-many relationship
-    @ManyToMany(() => Order)
-    orders: Order[]
+    @OneToMany(() => OrderProduct, orderProduct => orderProduct.product)
+    orderProducts: OrderProduct[]
 
-    @Column()
-    @CreateDateColumn()
-    createdAt: Date
-
-    @Column()
-    @UpdateDateColumn()
-    updatedAt: Date
+    @Column({nullable: true, default: false})
+    isDelete: boolean
 
 
 }

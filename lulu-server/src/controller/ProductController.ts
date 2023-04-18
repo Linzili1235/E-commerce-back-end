@@ -27,7 +27,7 @@ export class ProductController {
         let product = null
         try {
             product = await ProductController.repo.findOneOrFail({
-                where: {id: Number(productId)}
+                where: {product_real_id: productId}
             })
         }catch (e) {
             console.error('error write to database',e)
@@ -36,13 +36,15 @@ export class ProductController {
         return response.status(HttpCode.E200).send(new Err(HttpCode.E200, ErrStr.OK, product))
     }
     static async create(request: Request, response: Response, next: NextFunction) {
-        let {name, price, media, slug, description} = request.body
+        let {productId, name, price, img, slug, color, size} = request.body
         let product = new Product()
+        product.product_real_id = productId
         product.name = name
         product.price = price
-        product.media = media
+        product.media = img
         product.slug = slug
-        product.description = description
+        product.color = color
+        product.size = size
         product.isActive = true
         console.log('new product', product)
 
@@ -74,7 +76,7 @@ export class ProductController {
         let product = null
         try {
             product = await ProductController.repo.findOneOrFail({
-                where: {id: Number(productId)}
+                where: {product_real_id: productId}
             })
         }catch (e) {
             console.error('error write to database',e)
