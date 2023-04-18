@@ -8,7 +8,7 @@ import {Order} from "./Order";
 export class User {
 
     @PrimaryGeneratedColumn()
-    id: number
+    user_id: number
 
     @Column()
     @Length(1, 100)

@@ -33,6 +33,8 @@ for (let i = 0; i<products.length; i++) {
         const {colorAlt, whyWeMadeThis} = image
         const productImg = whyWeMadeThis[0]
         const sizeArray = sizes[0].details
+        // const updatedPrice = price.split(" ")[0]
+        // const numericValue = parseFloat(updatedPrice.replace(/[^0-9.]/g, ''));
         sizeArray.forEach((data) => {
             const slug = generateSlug(productId, colorAlt, data)
             newProducts.push({

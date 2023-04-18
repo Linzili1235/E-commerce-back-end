@@ -2,39 +2,35 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
-    CreateDateColumn,
-    UpdateDateColumn,
-    JoinTable,
-    ManyToOne, ManyToMany
+    ManyToOne, OneToMany,
+    JoinColumn
 } from "typeorm"
 import {Min} from "class-validator";
 import {User} from "./User";
-import {Product} from "./Product";
+import {OrderProduct} from "./OrderProduct";
+import {OrderStatus} from "./OrderStatus";
 
 // annotation 注释写法
 @Entity()
 export class Order {
 
     @PrimaryGeneratedColumn()
-    id: number
-
-    @Column('decimal', {precision:5, scale:2})
-    @Min(0)
-    price: number
+    order_id: number
 
     @Column('decimal', {precision:6, scale:2})
     @Min(0)
     total: number
 
-    @Column('decimal', {precision:5, scale:2, default: 1.00})
-    @Min(1)
-    taxRate: number
+    @Column({nullable: false})
+    // document payment id elsewhere
+    payment: number
 
-    @Column({nullable: true, default: false})
-    isDelete: boolean
+    @Column({nullable: false})
+    shippingAddress: string
 
     // 一个订单只能归于一个用户
     @ManyToOne(() => User, user => user.orders)
+    @JoinColumn({name: 'user_id'})
     user: User
 
     // Many-to-many with Product 多个订单包含多个产品
@@ -48,19 +44,12 @@ export class Order {
     //    3	            2	        1
     //    1	            3	        3
     //    3	            3	        2
-    @ManyToMany(() => Product)
-    @JoinTable()
+    @OneToMany(() => OrderProduct, orderProduct => orderProduct.order)
     //This field does not store actual values in the database directly. Instead, it's a representation of the
     //many-to-many relationship between Order and Product.
-    products: Product[]     // product_id array
+    orderProducts: OrderProduct[]     // product_id array
 
-    @Column()
-    @CreateDateColumn()
-    createdAt: Date
-
-    @Column()
-    @UpdateDateColumn()
-    updatedAt: Date
-
+    @OneToMany(()=> OrderStatus, orderStatus => orderStatus.order)
+    orderStatus: OrderStatus[]
 
 }

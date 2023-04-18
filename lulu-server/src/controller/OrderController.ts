@@ -33,7 +33,7 @@ export class OrderController extends CheckController{
         let order = null
         try {
             order = await OrderController.repo.findOneOrFail({
-                where: {id: Number(orderId)}
+                where: {order_id: Number(orderId)}
             })
         }catch (e) {
             console.error('error write to database',e)
@@ -42,11 +42,9 @@ export class OrderController extends CheckController{
         return response.status(HttpCode.E200).send(new Err(HttpCode.E200, ErrStr.OK, order))
     }
     static async create(request: Request, response: Response, next: NextFunction) {
-        let {price, total, taxRate, user, products} = request.body
+        let {total, taxRate, user, products} = request.body
         let order = new Order()
-        order.price = price
         order.total = total
-        order.taxRate = taxRate
         // user 传进来是id，我们需要object   --- object
         // products 传进来是多个id，我们需要一个 []  --- array
         try{
