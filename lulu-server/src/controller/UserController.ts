@@ -122,7 +122,7 @@ export class UserController {
         const userEmail = request.body.email
         const pwd = request.body.password
         // check if user id is present in the params
-        if (!userEmail || !pwd) return response.status(HttpCode.E400).send(new Err(HttpCode.E400, ErrStr.ErrMissingParameter))
+        if (!userEmail || !pwd) return response.status(HttpCode.E400).send(new Err(HttpCode.E400, ErrStr.ErrEmailOrPassword))
 
         // Authentication
         try {
@@ -131,7 +131,6 @@ export class UserController {
                 where: {email: userEmail}
             })
             const match = await bcrypt.compare(pwd, user.password)
-            console.log(match)
             if (match) {
                 // Authorization
                 // JWT token
@@ -143,23 +142,23 @@ export class UserController {
                 // a user to perform sensitive operations and prompt them to log in again if necessary.
                 const accessToken = jwt.sign(
                     // When a user logs in, generate an access token with auth_type = "login"
-                    {"email": user.email, auth_type: 'login'},
+                    {"email": user.email, "auth_type": 'login'},
                     "" + process.env.ACCESS_TOKEN_SECRET,
                     { expiresIn: process.env.ACCESS_TOKEN_EXPIRATION_TIME})
                 const refreshToken = jwt.sign(
-                    {"email": user.email, auth_type: 'refresh'},
+                    {"email": user.email, "auth_type": 'refresh'},
                     "" + process.env.REFRESH_TOKEN_SECRET,
                     { expiresIn: process.env.REFRESH_TOKEN_EXPIRATION_TIME})
 
-                const otherUsers = (await UserController.repo.find()).filter(person => person.email !== user.email)
                 // save refreshToken in the database so it can be cross-referenced
-                const currentUser = {...user, refreshToken}
-                await UserController.repo.save([...otherUsers, currentUser])
+                await UserController.repo.update({email: user.email}, {refreshToken: refreshToken});
+                console.log(refreshToken.slice(-3))
                 // save refresh token in cookie with httponly and expires in one day
+                // refreshToken will be saved in the Cookies
                 response.cookie('jwt', refreshToken, {httpOnly:true, maxAge:24*60*60*1000})
+
                 return response.status(HttpCode.E200).json({
                     accessToken,
-                    refreshToken,
                     error: new Err(HttpCode.E200, ErrStr.LoggedIn)
                 });
             }
