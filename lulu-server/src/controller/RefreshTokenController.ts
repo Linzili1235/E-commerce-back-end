@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const handleRefresh = async (req: Request, res: Response) => {
-    console.log(req)
     const cookies = req.cookies
     // check if there is a jwt in the cookie
     if (!cookies?.jwt) return res.status(HttpCode.E404).send(new Err(HttpCode.E404, ErrStr.ErrUnauthorized))
@@ -20,7 +19,7 @@ const handleRefresh = async (req: Request, res: Response) => {
     jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
-        (error, decoded) => {
+        (error: any, decoded: { email: any; }) => {
             if (error || !decoded) return res.status(HttpCode.E404).send(new Err(HttpCode.E404, ErrStr.ErrToken))
             // Give new access token
             const accessToken = jwt.sign(
@@ -35,6 +34,7 @@ const handleRefresh = async (req: Request, res: Response) => {
             });
         }
     )
+    return
 }
 
 export default handleRefresh;

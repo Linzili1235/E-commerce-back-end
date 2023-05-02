@@ -46,7 +46,6 @@ export class ProductController {
         product.color = color
         product.size = size
         product.isActive = true
-        console.log('new product', product)
 
         try{
             const errors = await validate(product)
@@ -89,7 +88,6 @@ export class ProductController {
         product.price = price
         product.media = media
         product.slug = slug
-        product.description = description
 
         // validate update product
         try{

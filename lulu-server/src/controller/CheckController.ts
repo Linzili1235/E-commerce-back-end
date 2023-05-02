@@ -4,20 +4,19 @@ export interface IdCheckRes {
 }
 
 export class CheckController {
-    public static async checkIdExists(ids: any[], repo: any): Promise<IdCheckRes> {
-        let entities = []
+    public static async checkIdExists(ids: any[], repo: any, idColumnName: string): Promise<IdCheckRes> {
+        let entities:any[] = []
         let index = 0
         let res: IdCheckRes = {
             index: -1,
             entities
         }
-        console.log('in check-controller', ids.length)
         for (index = 0; index < ids.length; index++) {
             try {
+                let whereClause : any = {};
+                whereClause[idColumnName] = ids[index];
                 let entry = await repo.findOneOrFail({
-                    where: {
-                        id: ids[index]
-                    }
+                    where: whereClause
                 })
                 console.log('entry', entry)
                 res.entities.push(entry)

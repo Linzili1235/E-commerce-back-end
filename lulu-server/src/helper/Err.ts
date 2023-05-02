@@ -26,7 +26,7 @@ export class Err {
     code: Number;
     msg: string;
 
-    constructor(code: HttpCode = HttpCode.E200, msg: string = ErrStr.OK, data = null) {
+    constructor(code: HttpCode = HttpCode.E200, msg: string = ErrStr.OK, data : any | null = null) {
         this.data = data;
         this.code = code;
         this.msg = msg;
