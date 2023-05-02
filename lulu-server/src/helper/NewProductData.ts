@@ -10,7 +10,8 @@ function generateSlug(productId: string, color: string, size: string): string {
     const slugParts = [productId]
 
     if (color) {
-        slugParts.push(color)
+        const newColor = color.replace(' ', '-')
+        slugParts.push(newColor)
     }
     if (size) {
         slugParts.push(size)
@@ -19,7 +20,7 @@ function generateSlug(productId: string, color: string, size: string): string {
 }
 async function generateDataArray() {
     const folderPath = '../../src/allProduct/';
-    let newProducts = []
+    let newProducts: { productId: any; name: any; slug: string; price: any; size: string; img: any; color: any; }[] = []
     // Read/write files , make API requests should use await and promises
 
     const files = await fs.promises.readdir(folderPath)
@@ -28,7 +29,7 @@ async function generateDataArray() {
             const filePath = path.join(folderPath, file);
             console.log(filePath);
 
-            const jsonData = await fs.promises.readFile(filePath, 'utf-8', (err, data) => {
+            const jsonData = await fs.promises.readFile(filePath, 'utf-8', (err: any, data: any) => {
                 if (err) throw err
                 console.log("Successfully read data")
             })
@@ -58,7 +59,7 @@ async function generateDataArray() {
                     const sizeArray = sizes[0].details
                     // generate slug data for every product with unique color and size
                     let slugArray = []
-                    sizeArray.forEach((data) => {
+                    sizeArray.forEach((data: string) => {
                         // every size
                         const slug = generateSlug(productId, colorAlt, data)
                         slugArray.push(slug)
@@ -91,9 +92,9 @@ async function generateDataArray() {
 
     }
 
-async function writeToFileAsync(fileName){
+async function writeToFileAsync(fileName: string){
     const newProducts = await generateDataArray()
-    fs.writeFile(fileName, JSON.stringify(newProducts, null, 2), err => {
+    fs.writeFile(fileName, JSON.stringify(newProducts, null, 2), (err: any) => {
         if (err) {
             console.error(err);
             return;

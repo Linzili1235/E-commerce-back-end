@@ -1,6 +1,6 @@
 
 import "reflect-metadata"
-import * as express from "express"
+import express from "express"
 import { AppDataSource } from "./data-source"
 import verifyJWT from "./middleware/verifyJWT";
 import product from "./routes/product";
@@ -10,8 +10,11 @@ import order from "./routes/order";
 import logout from "./routes/logout";
 import corsOptions from "./config/corsOptions";
 import credentials from "./middleware/credentials";
-import * as cors from 'cors';
-const SERVER_PORT = 3000;
+import cors from 'cors';
+import {UserController} from "./controller/UserController";
+import router from "./routes/user";
+import verifyJWTAuthType from "./middleware/verifyJWTAuthType";
+const SERVER_PORT = 8000;
 const cookieParser = require("cookie-parser");
 
 AppDataSource.initialize().then(async () => {
@@ -45,6 +48,11 @@ AppDataSource.initialize().then(async () => {
     // protected routes
     app.use(verifyJWT)
     app.use('/order', order)
+    app.use('/user/oneUser', UserController.one)
+    // verify jwt auth_type for more sensitive information
+    app.use(verifyJWTAuthType)
+    app.use('/user/update', UserController.update) // auth_type must be logIn to change the password or delete
+    app.use('/user/remove', UserController.remove)
 
     // start express server
     app.listen(SERVER_PORT)

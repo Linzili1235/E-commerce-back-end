@@ -9,7 +9,7 @@ const {ConcurrencyManager} = require("axios-concurrency")
 
 // create instance to limit concurrent requests
 let instance = axios.create({
-    baseURL:"http://localhost:3000"
+    baseURL:"http://localhost:3002"
 })
 
 // a concurrency parameter of 1 makes all api requests sequential
@@ -19,7 +19,7 @@ const manager = ConcurrencyManager(instance, MAX_CONCURRENT_REQUESTS);
 
 const filePath = "newData.json"
 
-const jsonData = fs.readFileSync(filePath, 'utf-8', (err, data) => {
+const jsonData = fs.readFileSync(filePath, 'utf-8', (err: any, data: any) => {
     if (err) throw err
     console.log("Successfully read data")
 })
@@ -29,7 +29,7 @@ const postAmount = parsedData.length / 10
 
 for (let count = 0;  count<10; count++) {
     const addData = parsedData.splice(0, postAmount)
-    Promise.all(addData.map(product => instance.post('/product/', product)))
+    Promise.all(addData.map((product: any) => instance.post('/product/', product)))
         .then(resp => {
             console.log(resp)
         }).catch(err => console.log(err))

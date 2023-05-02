@@ -22,10 +22,9 @@ export class OrderProduct {
 
     @Column('decimal', {precision:6, scale:2})
     @Min(0)
-    total: number
+    price: number
 
 
-    // 一个订单只能归于一个用户
     @ManyToOne(() => Order, order => order.orderProducts)
     @JoinColumn({name: "order_id"})
     order: Order

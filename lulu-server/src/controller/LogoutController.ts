@@ -6,11 +6,9 @@ import {UserController} from "./UserController";
 const handleLogout = async (req: Request, res: Response) => {
     //On client, need to delete access token
     const cookies = req.cookies
-    console.log('hello', req.cookies)
     // check if there is a jwt in the cookie
     if (!cookies?.jwt) return res.status(HttpCode.E200).send('no jwt, no need to clear')
     const refreshToken = cookies.jwt
-    console.log(cookies.jwt)
     // each loggedIn user has their own jwt token
     const foundUser = await UserController.repo.findOne({where: {refreshToken}})
     // no user, but has cookies
