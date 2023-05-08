@@ -9,7 +9,7 @@ const {ConcurrencyManager} = require("axios-concurrency")
 
 // create instance to limit concurrent requests
 let instance = axios.create({
-    baseURL:"http://localhost:3002"
+    baseURL:"http://localhost:8000"
 })
 
 // a concurrency parameter of 1 makes all api requests sequential
@@ -33,7 +33,7 @@ for (let count = 0;  count<10; count++) {
         .then(resp => {
             console.log(resp)
         }).catch(err => console.log(err))
-    // axios.post(apiURL, addData)
+    // axios.post('http://localhost:3000/product/', addData)
     //     .then(resp => {
     //         console.log(resp.data)
     //     }).catch(err => console.log(err))
@@ -42,7 +42,7 @@ for (let count = 0;  count<10; count++) {
 // to stop using the concurrency manager.
 // will eject the request and response handlers from your instance
 // comment it if needed
-manager.detach()
+// manager.detach()
 
 
 

@@ -9,13 +9,22 @@ import {Min} from "class-validator";
 import {User} from "./User";
 import {OrderProduct} from "./OrderProduct";
 import {OrderStatus} from "./OrderStatus";
-
+import {v4 as uuidv4} from 'uuid'
 // annotation 注释写法
 @Entity()
 export class Order {
 
     @PrimaryGeneratedColumn()
     order_id: number
+
+
+    @Column({ unique: true })
+    orderNumber: string;
+
+    // You can generate and assign the transaction number in the entity constructor or before saving
+    constructor() {
+        this.orderNumber = `TXN-${uuidv4()}`;
+    }
 
     @Column('decimal', {precision:6, scale:2})
     @Min(0)

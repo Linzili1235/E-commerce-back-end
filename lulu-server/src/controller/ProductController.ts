@@ -37,6 +37,7 @@ export class ProductController {
     }
     static async create(request: Request, response: Response, next: NextFunction) {
         let {productId, name, price, img, slug, color, size} = request.body
+        console.log(productId, name, price, img, slug, color, size)
         let product = new Product()
         product.product_real_id = productId
         product.name = name
@@ -93,6 +94,7 @@ export class ProductController {
         try{
             const errors = await validate(product)
             if(errors.length > 0) {
+                console.log("errors", errors)
                 let error = new Err(HttpCode.E400, ErrStr.ErrMissingParameter)
                 return response.status(HttpCode.E400).send(error)
             }
