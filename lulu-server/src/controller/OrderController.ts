@@ -30,6 +30,7 @@ export class OrderController extends CheckController{
         return response.status(HttpCode.E200).send(new Err(HttpCode.E200, ErrStr.OK, orders))
     }
     static async one(request: Request, response: Response, next: NextFunction) {
+        // TODO: change orderID to order number which people normally have
         const {orderId} = request.params
         // check if order id is present in the params
         if (!orderId) return response.status(HttpCode.E400).send(new Err(HttpCode.E400, ErrStr.ErrMissingParameter))
@@ -99,6 +100,7 @@ export class OrderController extends CheckController{
             throw (new Err(HttpCode.E400,  ErrStr.ErrInvalid))
         }
 
+        // TODO: why here is res ?
         let res: IdCheckRes[] = []
             // Check user
         let tempUser = await OrderController.checkIdExists([user], UserController.repo, 'user_id')
@@ -136,8 +138,10 @@ export class OrderController extends CheckController{
                     where: { order_id: Number(orderId) },
                 });
 
-                // Delete the order from the database
-                await OrderController.repo.remove(order);
+                // Don't actually delete the data as it's valuable.
+                order.isDelete = true
+                // Update the order from the database
+                await OrderController.repo.save(order);
 
                 // Send a success response
                 return response

@@ -61,4 +61,7 @@ export class Order {
     @OneToMany(()=> OrderStatus, orderStatus => orderStatus.order)
     orderStatus: OrderStatus[]
 
+    @Column({default: false})
+    isDelete: boolean
+
 }
