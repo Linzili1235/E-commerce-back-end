@@ -14,6 +14,7 @@ import cors from 'cors';
 import {UserController} from "./controller/UserController";
 import router from "./routes/user";
 import verifyJWTAuthType from "./middleware/verifyJWTAuthType";
+
 const SERVER_PORT = 8000;
 const cookieParser = require("cookie-parser");
 

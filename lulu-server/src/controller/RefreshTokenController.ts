@@ -20,6 +20,7 @@ const handleRefresh = async (req: Request, res: Response) => {
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
         (error: any, decoded: { email: any; }) => {
+            // TODO: why not verify user email? foundUser.email !== decoded.email?
             if (error || !decoded) return res.status(HttpCode.E404).send(new Err(HttpCode.E404, ErrStr.ErrToken))
             // Give new access token
             const accessToken = jwt.sign(

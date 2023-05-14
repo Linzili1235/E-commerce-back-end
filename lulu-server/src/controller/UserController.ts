@@ -156,6 +156,7 @@ export class UserController {
                 await UserController.repo.update({email: user.email}, {refreshToken: refreshToken});
                 // save refresh token in cookie with httponly and expires in one day
                 // refreshToken will be saved in the Cookies
+                // TODO: Add same site cookie
                 response.cookie('jwt', refreshToken, {httpOnly:true, maxAge:24*60*60*1000})
 
                 return response.status(HttpCode.E200).json({

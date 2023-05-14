@@ -14,7 +14,7 @@ const verifyJWT = (req: GetUserInfo, res: Response, next: NextFunction):void => 
     if (!authHeader) {
         res.status(HttpCode.E404).send(new Err(HttpCode.E404, ErrStr.ErrToken))
     }
-    const token = authHeader && authHeader.split(' ')[1]
+    const token = authHeader && authHeader.split(' ')[1] // bearer token
     // check if token is expired
     console.log('verifyJWT, split bearToken')
     if (typeof token === "string") {
