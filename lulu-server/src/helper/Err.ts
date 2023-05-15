@@ -15,7 +15,7 @@ export enum ErrStr {
     ErrNoObj = 'Can not find the specific record',
     ErrStore = 'Failed to store dats',
     ErrInvalid = 'Invalid user id or product ids',
-    ErrInvoice = 'Fail to creae invoice',
+    ErrInvoice = 'Fail to create invoice',
     ErrEmailOrPassword = 'Invalid email or password',
     // PARAMETER
     ErrMissingParameter = 'Missing Params',
