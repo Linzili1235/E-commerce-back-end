@@ -18,7 +18,7 @@ export class CheckController {
                 let entry = await repo.findOneOrFail({
                     where: whereClause
                 })
-                console.log('entry', entry)
+                // console.log('entry', entry)
                 res.entities.push(entry)
             }catch (e) {
                 break

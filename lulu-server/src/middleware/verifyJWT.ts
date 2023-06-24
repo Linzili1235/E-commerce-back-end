@@ -6,13 +6,13 @@ import { NextFunction, Request, Response } from 'express';
 
 interface GetUserInfo extends Request {
     email: string,
-    auth_type: string
+    // auth_type: string
 }
 
 const verifyJWT = (req: GetUserInfo, res: Response, next: NextFunction):void => {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-        res.status(HttpCode.E404).send(new Err(HttpCode.E404, ErrStr.ErrToken))
+        res.status(HttpCode.E403).send(new Err(HttpCode.E403, ErrStr.ErrToken))
     }
     const token = authHeader && authHeader.split(' ')[1] // bearer token
     // check if token is expired
@@ -21,16 +21,15 @@ const verifyJWT = (req: GetUserInfo, res: Response, next: NextFunction):void => 
         jwt.verify(
             token,
             process.env.ACCESS_TOKEN_SECRET,
-            (err: any, decoded: { email: string; auth_type: string; }) => {
+            (err: any, decoded: { email: string; }) => {
                 // decoded is the information from the token's payload section
                 // token = payload + secret + options
                 console.log(`error is ${err}`)
                 if (err || !decoded.email) {
-                    return res.status(HttpCode.E404).send(new Err(HttpCode.E404, ErrStr.ErrToken))
+                    return res.status(HttpCode.E403).send(new Err(HttpCode.E403, ErrStr.ErrToken))
                 }
 
                 req.email = decoded.email
-                req.auth_type = decoded.auth_type
                 next()
                 return
             }

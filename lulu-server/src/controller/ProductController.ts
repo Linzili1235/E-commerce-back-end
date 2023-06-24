@@ -37,7 +37,6 @@ export class ProductController {
     }
     static async create(request: Request, response: Response, next: NextFunction) {
         let {productId, name, price, img, slug, color, size} = request.body
-        console.log(productId, name, price, img, slug, color, size)
         let product = new Product()
         product.product_real_id = productId
         product.name = name

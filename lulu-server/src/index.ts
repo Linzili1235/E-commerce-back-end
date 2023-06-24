@@ -26,7 +26,7 @@ AppDataSource.initialize().then(async () => {
     // and fetch cookies credentials requirement
     app.use(credentials)
     // Cross-origin resource sharing
-    app.use(cors())
+    app.use(cors(corsOptions))
     // middleware: parsing HTTP request bodies,
     // request body can contain various types of data, such as JSON, XML, or form data.
     app.use(express.json())
@@ -45,12 +45,14 @@ AppDataSource.initialize().then(async () => {
     app.use('/refresh', refresh)
     // logout route
     app.use('/logout', logout)
+    // app.use('/order', order)
 
     // protected routes
     app.use(verifyJWT)
     app.use('/order', order)
     app.use('/user/oneUser', UserController.one)
     // verify jwt auth_type for more sensitive information
+    // -----------NOTICE: here in this application we don't have administrator, so no update and remove here
     app.use(verifyJWTAuthType)
     app.use('/user/update', UserController.update) // auth_type must be logIn to change the password or delete
     app.use('/user/remove', UserController.remove)

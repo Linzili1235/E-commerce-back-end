@@ -16,12 +16,14 @@ const handleLogout = async (req: Request, res: Response) => {
         res.clearCookie('jwt', {httpOnly: true, sameSite: 'none', secure: true, maxAge: 0, path: '/'})
         return res.status(HttpCode.E200)
     }
+    foundUser.refreshToken = ""
 
-    // Delete the refresh token for the user in the db and cookie --- logout
-    const otherUser = (await UserController.repo.find()).filter(user => user.refreshToken !== foundUser.refreshToken)
-    const currentUser = {...foundUser, refreshToken: ''};
+    // // Delete the refresh token for the user in the db and cookie --- logout
+    // const otherUser = (await UserController.repo.find()).filter(user => user.refreshToken !== foundUser.refreshToken)
+    // const currentUser = {...foundUser, refreshToken: ''};
     // TODO: why not just update the currentUser, is that how to update?
-    await UserController.repo.save([...otherUser, currentUser])
+    // await UserController.repo.save([...otherUser, currentUser])
+    await UserController.repo.save(foundUser)
     // delete the cookie
     res.clearCookie('jwt', {httpOnly: true, sameSite: 'none', secure: true, maxAge: 0, path: '/'}) // secure: true - only serves on https
 

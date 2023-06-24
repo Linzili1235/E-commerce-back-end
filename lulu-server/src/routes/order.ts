@@ -6,7 +6,8 @@ const router = Router();
 
 
 router.get('/', OrderController.all)
-router.get('/:orderId', OrderController.one)
+router.get('/review', OrderController.one)
+router.get('/invoice', OrderController.createInvoice)
 router.post('/create', OrderController.create)
 router.put('/update/:orderId', OrderController.update)
 router.delete('/remove/:orderId', OrderController.remove)

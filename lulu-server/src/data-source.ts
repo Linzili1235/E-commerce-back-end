@@ -3,8 +3,13 @@ import { DataSource, DataSourceOptions } from "typeorm"
 import { SeederOptions } from 'typeorm-extension';
 
 const options: DataSourceOptions & SeederOptions = {
-    type: "sqlite",
-    database: "database.sqlite",
+    type: "postgres",
+    host: "localhost",
+    port: 5432,
+    username: "postgres",
+    password: "XMMxdwnkt547",
+    database: "lulu",
+
     synchronize: true,
     logging: false,
     entities: [

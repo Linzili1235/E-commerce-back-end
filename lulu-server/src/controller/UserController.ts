@@ -47,7 +47,22 @@ export class UserController {
             // what is 10? 10 is the salt round
             // It is the log2 of the number of rounds of hashing that are applied to the password
             // 10 means 2^10 = 1024 rounds of hashing.
-            const hashedPassword = await bcrypt.hash(password, 10)
+            const saltRounds = 10;
+            console.log(password, email, firstName)
+            const hashedPassword = await bcrypt.hashSync(password, saltRounds);
+
+
+            // const hashedPassword = await bcrypt.hash(password, 10)
+            // if already has one, use another user
+            try {
+                await UserController.repo.findOneOrFail({
+                where: {email: email}
+
+            })
+                let error = new Err(HttpCode.E409, ErrStr.ErrUserExist)
+                return response.status(HttpCode.E409).send(error)
+            } catch (e){
+            }
             let user = new User()
             user.firstName = firstName
             user.lastName = lastName
@@ -65,12 +80,12 @@ export class UserController {
             }
             // save data to db
             await UserController.repo.save(user)
-            response.status(HttpCode.E200).json(`Success! New user: ${user.firstName} is created!`)
+            return response.status(HttpCode.E200).json(`Success! New user: ${user.firstName} is created!`)
         }catch(e){
+            console.log(e)
             return response.status(HttpCode.E400).send(new Err(HttpCode.E400, ErrStr.ErrStore, e))
         }
 
-        return response.status(HttpCode.E200).send(new Err())
     }
 
     static async remove(request: Request, response: Response, next: NextFunction) {
@@ -120,7 +135,6 @@ export class UserController {
         // return response.status(HttpCode.E200).send(new Err())
     }
     static async logIn(request: Request, response: Response, next: NextFunction) {
-        console.log('x')
         const userEmail = request.body.email
         const pwd = request.body.password
         // check if user id is present in the params
@@ -144,7 +158,7 @@ export class UserController {
                 // a user to perform sensitive operations and prompt them to log in again if necessary.
                 const accessToken = jwt.sign(
                     // When a user logs in, generate an access token with auth_type = "login"
-                    {"email": user.email, "auth_type": 'login'},
+                    {"email": user.email},
                     "" + process.env.ACCESS_TOKEN_SECRET,
                     { expiresIn: process.env.ACCESS_TOKEN_EXPIRATION_TIME})
                 const refreshToken = jwt.sign(
@@ -156,8 +170,8 @@ export class UserController {
                 await UserController.repo.update({email: user.email}, {refreshToken: refreshToken});
                 // save refresh token in cookie with httponly and expires in one day
                 // refreshToken will be saved in the Cookies
-                // TODO: Add same site cookie
-                response.cookie('jwt', refreshToken, {httpOnly:true, maxAge:24*60*60*1000})
+                response.cookie('jwt', refreshToken, {httpOnly:true, secure: true,
+                    maxAge:24*60*60*1000})
 
                 return response.status(HttpCode.E200).json({
                     accessToken,
