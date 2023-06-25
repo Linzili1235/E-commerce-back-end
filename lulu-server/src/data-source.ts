@@ -4,11 +4,11 @@ import { SeederOptions } from 'typeorm-extension';
 
 const options: DataSourceOptions & SeederOptions = {
     type: "postgres",
-    host: "localhost",
-    port: 5432,
+    host: "containers-us-west-132.railway.app",
+    port: 7335,
     username: "postgres",
-    password: "XMMxdwnkt547",
-    database: "lulu",
+    password: "OiEFzYOw0tlzBJberKL4",
+    database: "railway",
 
     synchronize: true,
     logging: false,

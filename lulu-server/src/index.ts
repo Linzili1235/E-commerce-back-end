@@ -15,7 +15,7 @@ import {UserController} from "./controller/UserController";
 import router from "./routes/user";
 import verifyJWTAuthType from "./middleware/verifyJWTAuthType";
 
-const SERVER_PORT = 8000;
+const SERVER_PORT = process.env.SERVER_PORT;
 const cookieParser = require("cookie-parser");
 
 AppDataSource.initialize().then(async () => {
