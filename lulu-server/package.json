@@ -42,7 +42,7 @@
       "uuid": "^9.0.0"
    },
    "scripts": {
-      "start": "set debug=* && ts-node-dev --respawn --transpile-only ./src/index.ts",
+      "start": "set debug=*&&--omit=dev && ts-node-dev --respawn --transpile-only ./src/index.ts",
       "typeorm": "typeorm-ts-node-commonjs -d ./src/data-source.ts",
       "[__for TypeORNM migration": "",
       "migration:create": "ts-node ./node_modules/typeorm/cli.js migration:create -d ./src/data-source.ts",
