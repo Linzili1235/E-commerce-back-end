@@ -9,7 +9,7 @@ const {ConcurrencyManager} = require("axios-concurrency")
 
 // create instance to limit concurrent requests
 let instance = axios.create({
-    baseURL:"https://e-commerce-back-end-production-402e.up.railway.app"
+    baseURL:"https://nicole-shopping.onrender.com"
 })
 
 // a concurrency parameter of 1 makes all api requests sequential

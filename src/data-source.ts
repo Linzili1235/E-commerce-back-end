@@ -7,7 +7,7 @@ const options: DataSourceOptions & SeederOptions = {
     host: "dpg-cibphsd9aq03rjgpmhp0-a",
     port: 5432,
     username: "nicole",
-    password: process.env.PASSWORD,
+    password: 'E9mYk4wMnGtWbbl2LGuh4spV8Ktm0eQS',
     database: "railway_idsv",
 
     synchronize: true,
